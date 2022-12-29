@@ -1,7 +1,5 @@
 import java.util.Scanner;
-import java.io.File;
 import java.util.Stack;
-import java.util.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -14,7 +12,7 @@ public class RpnCalculator {
         String filename = scan.nextLine();
         
         Scanner scanner = new Scanner(new FileReader("./"+ filename)).useDelimiter("\\n");
-        System.out.println("Digite inicie a operação (s para sair): ");
+        System.out.println("Pressione a tecla s para sair");
 
         String input = "";
         while (scanner.hasNextLine()) {
@@ -22,12 +20,35 @@ public class RpnCalculator {
 
             if (isNumber(input)) {
                 pilha.push(Double.parseDouble(input));
-            } else if (isOperation(input)) {
+                Token token = new Token(TokenType.NUM, input);
+                System.out.println(token.toString());
+
+            } else if (isOperation(input) != null) {
+                if (isOperation(input) == TokenType.PLUS){
+                    Token token = new Token(TokenType.PLUS, input);
+                    System.out.println(token.toString());
+                }
+                if (isOperation(input) == TokenType.MINUS){
+                    Token token = new Token(TokenType.MINUS, input);
+                    System.out.println(token.toString());
+                }
+                if (isOperation(input) == TokenType.STAR){
+                    Token token = new Token(TokenType.STAR, input);
+                    System.out.println(token.toString());
+
+                }
+                if (isOperation(input) == TokenType.SLASH){
+                    Token token = new Token(TokenType.SLASH, input);
+                    System.out.println(token.toString());
+                }
                 Double current = parseOperation(input, pilha);
                 if (pilha.size() == 0) {
                     System.out.println(">> " + current);
                 }
                 pilha.push(current);
+            } else{
+                System.out.println("Error: Unexpected character: " + input);
+                break;
             }
         }
     }
@@ -87,9 +108,11 @@ public class RpnCalculator {
         return true;
     }
 
-    public static boolean isOperation(String input) {
-        if (input == null) return false;
-
-        return input.equals("+") || input.equals("-") || input.equals("*") || input.equals("/");
+    public static TokenType isOperation(String input) {
+        if (input.equals("+")) return TokenType.PLUS;
+        if (input.equals("-")) return TokenType.MINUS;
+        if (input.equals("*") ) return TokenType.STAR;
+        if (input.equals("/")) return TokenType.SLASH;
+        return null;
     }
 }
