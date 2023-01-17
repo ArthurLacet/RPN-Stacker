@@ -1,3 +1,4 @@
+package task2;
 public class Token {
 
 	public final TokenType type; // token type
